@@ -1,5 +1,6 @@
 import React from 'react'
 import Blog from './components/Blog'
+import BlogForm from './components/BlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -10,7 +11,12 @@ class App extends React.Component {
       blogs: [],
       username: '',
       password: '',
-      user: null
+      user: null,
+      newBlog: {
+        title: '',
+        author: '',
+        url: ''
+      }
     }
   }
 
@@ -60,6 +66,30 @@ class App extends React.Component {
     this.setState({ [event.target.name]: event.target.value })
   }
 
+  handleBlogFormChange = (event) => {
+    this.setState({
+      newBlog: {...this.state.newBlog, [event.target.name]: event.target.value }
+    })
+  }
+
+  handleBlogFormSubmit = async (event) => {
+    event.preventDefault()
+    try{
+      const newBlog = await blogService.create(this.state.newBlog)
+
+      this.setState({
+        blogs: [...this.state.blogs, newBlog]
+      })
+    } catch(exception) {
+      this.setState({
+        error: 'error',
+      })
+      setTimeout(() => {
+        this.setState({ error: null })
+      }, 5000)
+    }
+  }
+
   render() {
     const loginForm = () => (
       <div>
@@ -104,6 +134,10 @@ class App extends React.Component {
           <h2>blogs</h2>
           <p>{this.state.user.name} logged in</p>
           <button onClick={this.logout}>logout</button>
+          <BlogForm
+            newBlog={this.state.newBlog}
+            onChange={this.handleBlogFormChange}
+            onSubmit={this.handleBlogFormSubmit} />
           {blogList()}
         </div>
     }
