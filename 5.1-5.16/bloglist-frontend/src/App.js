@@ -1,8 +1,11 @@
 import React from 'react'
 import Blog from './components/Blog'
 import BlogForm from './components/BlogForm'
+import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
+
+import './index.css'
 
 class App extends React.Component {
   constructor(props) {
@@ -16,6 +19,10 @@ class App extends React.Component {
         title: '',
         author: '',
         url: ''
+      },
+      notification: {
+        type: '',
+        text: ''
       }
     }
   }
@@ -47,10 +54,18 @@ class App extends React.Component {
       this.setState({ username: '', password: '', user})
     } catch(exception) {
       this.setState({
-        error: 'käyttäjätunnus tai salasana virheellinen',
+        notification: {
+          type: "error",
+          text: "wrong username or password"
+        }
       })
       setTimeout(() => {
-        this.setState({ error: null })
+        this.setState({
+          notification: {
+            type: "",
+            text: ""
+          }
+        })
       }, 5000)
     }
   }
@@ -80,12 +95,41 @@ class App extends React.Component {
       this.setState({
         blogs: [...this.state.blogs, newBlog]
       })
-    } catch(exception) {
       this.setState({
-        error: 'error',
+        notification: {
+          type: "success",
+          text: `a new blog '${this.state.newBlog.title}' by ${this.state.newBlog.author} added`
+        }
       })
       setTimeout(() => {
-        this.setState({ error: null })
+        this.setState({
+          notification: {
+            type: "",
+            text: ""
+          }
+        })
+      }, 5000)
+      this.setState({
+        newBlog: {
+          title: '',
+          author: '',
+          url: ''
+        },
+      })
+    } catch(exception) {
+      this.setState({
+        notification: {
+          type: "error",
+          text: "There was an error with submitting the new blog"
+        }
+      })
+      setTimeout(() => {
+        this.setState({
+          notification: {
+            type: "",
+            text: ""
+          }
+        })
       }, 5000)
     }
   }
@@ -93,7 +137,7 @@ class App extends React.Component {
   render() {
     const loginForm = () => (
       <div>
-        <h2>Log in to application</h2>
+        <h1>Log in to application</h1>
     
         <form onSubmit={this.login}>
           <div>
@@ -128,10 +172,11 @@ class App extends React.Component {
     )
     return (
       <div>
+        <Notification notification={this.state.notification}/>
         {this.state.user === null ?
         loginForm() :
         <div>
-          <h2>blogs</h2>
+          <h1>blogs</h1>
           <p>{this.state.user.name} logged in</p>
           <button onClick={this.logout}>logout</button>
           <BlogForm

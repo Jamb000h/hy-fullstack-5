@@ -1,23 +1,35 @@
 import React from 'react'
 const BlogForm = (props) => (
   <form onSubmit={props.onSubmit}>
-    <input 
-      type="text"
-      name="title"
-      value={props.newBlog.title}
-      onChange={props.onChange} />
+    <h2>create new</h2>
+    <label htmlFor="title">
+      title
+      <input 
+        type="text"
+        name="title"
+        id="title"
+        value={props.newBlog.title}
+        onChange={props.onChange} />
+      </label>
 
-     <input
-      type="text"
-      name="author"
-      value={props.newBlog.author}
-      onChange={props.onChange} />
+    <label htmlFor="title">
+      author
+      <input
+        type="text"
+        name="author"
+        id="author"
+        value={props.newBlog.author}
+        onChange={props.onChange} />
+    </label>
 
-     <input
-      type="text"
-      name="url"
-      value={props.newBlog.url}
-      onChange={props.onChange} />
+    <label htmlFor="url">
+      url
+      <input
+        type="text"
+        name="url"
+        value={props.newBlog.url}
+        onChange={props.onChange} />
+    </label>
 
       <input type="submit" value="create" />
   </form> 
