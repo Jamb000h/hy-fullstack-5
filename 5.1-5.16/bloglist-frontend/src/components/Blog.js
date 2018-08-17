@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 class Blog extends React.Component {
   constructor(props) {
@@ -6,6 +7,13 @@ class Blog extends React.Component {
     this.state = {
       visible: false,
     }
+  }
+
+  static propTypes = {
+    handleLike: PropTypes.func.isRequired,
+    handleDelete: PropTypes.func.isRequired,
+    blog: PropTypes.object.isRequired,
+    loggedUserId: PropTypes.string.isRequired
   }
 
   toggleVisibility = () => {
@@ -36,27 +44,29 @@ class Blog extends React.Component {
 
   render() {
 
-    const blogStyle = {
-      paddingTop: 10,
-      paddingLeft: 2,
+    const blogWrapperStyle = {
+      padding: 5,
       border: 'solid',
       borderWidth: 1,
       marginBottom: 5
     }
 
+    const blogInfoStyle = {
+      display: this.state.visible ? 'block' : 'none'
+    }
+
     const blog = this.props.blog
-    const showWhenVisible = { display: this.state.visible ? '' : 'none' }
 
     return (
-      <div style={blogStyle}>
+      <div style={blogWrapperStyle}>
         <div onClick={this.toggleVisibility}>
-          {blog.title} {blog.author}
+          {blog.title} by {blog.author}
         </div>
-        <div style={showWhenVisible}>
-          {blog.url}
-          {blog.likes}
-          <button onClick={this.like()}>vote</button>
-          added by {blog.user.name}
+        <div style={blogInfoStyle}>
+          <p>URL: {blog.url}</p>
+          <p>Likes: {blog.likes}</p>
+          <button onClick={this.like()}>like</button>
+          <p>added by {blog.user.name}</p>
           {this.deleteButton()}
         </div>
       </div>  
