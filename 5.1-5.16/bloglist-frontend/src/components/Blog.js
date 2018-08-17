@@ -14,7 +14,15 @@ class Blog extends React.Component {
 
   like = () => {
     return () => {
-      this.props.handleClick(this.props.blog.id)
+      this.props.handleLike(this.props.blog.id)
+    }
+  }
+
+  delete = () => {
+    return () => {
+      if(window.confirm(`Delete ${this.props.blog.title} by ${this.props.blog.author}?`)) {
+        this.props.handleDelete(this.props.blog.id)
+      }
     }
   }
 
@@ -41,6 +49,7 @@ class Blog extends React.Component {
           {blog.likes}
           <button onClick={this.like()}>vote</button>
           added by {blog.user.name}
+          <button onClick={this.delete()}>delete</button>
         </div>
       </div>  
     );

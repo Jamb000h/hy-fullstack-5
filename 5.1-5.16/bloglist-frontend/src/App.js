@@ -88,9 +88,43 @@ class App extends React.Component {
     })
   }
 
-  handleLike = async (id) => {
+  handleDelete = async (id) => {
+    try {
 
-    console.log(id)
+      const deletedBlog = await blogService.deleteBlog(id)
+
+      console.log(deletedBlog)
+
+      // Show success message
+      this.setState({
+        blogs: this.state.blogs.filter( blog => blog.id !== id),
+        notification: {
+          type: "success",
+          text: `the blog has been deleted`
+        }
+      })
+    } catch(exception) {
+      // Show error message
+      this.setState({
+        notification: {
+          type: "error",
+          text: "There was an error with deleting the blog"
+        }
+      })
+    } finally {
+      // Hide message in 5 seconds
+      setTimeout(() => {
+        this.setState({
+          notification: {
+            type: "",
+            text: ""
+          }
+        })
+      }, 5000)
+    }
+  }
+
+  handleLike = async (id) => {
 
     try {
       const blogById = this.state.blogs.find( blog => blog.id === id)
@@ -213,9 +247,18 @@ class App extends React.Component {
 
     const blogList = () => (
       <div>
-        {this.state.blogs.map(blog => 
-          <Blog key={blog.id} blog={blog} handleClick={this.handleLike}/>
-        )}
+        {this.state.blogs
+          .sort( (a, b) => {
+            return a.likes < b.likes
+          })
+          .map(blog => 
+            <Blog
+              key={blog.id}
+              blog={blog}
+              handleLike={this.handleLike}
+              handleDelete={this.handleDelete} />
+          )
+        }
       </div>
     )
     return (
