@@ -38,9 +38,9 @@ const BlogForm = (props) => (
 )
 
 BlogForm.propTypes = {
-  newBlog: PropTypes.object.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
-  onSubmit: PropTypes.func.isRequired
+  newBlog: PropTypes.object.isRequired
 }
 
 export default BlogForm

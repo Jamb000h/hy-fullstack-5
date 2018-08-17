@@ -13,7 +13,7 @@ class Blog extends React.Component {
     handleLike: PropTypes.func.isRequired,
     handleDelete: PropTypes.func.isRequired,
     blog: PropTypes.object.isRequired,
-    loggedUserId: PropTypes.string.isRequired
+    loggedUserId: PropTypes.string.isRequired,
   }
 
   toggleVisibility = () => {
