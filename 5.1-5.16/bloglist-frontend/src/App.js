@@ -2,6 +2,7 @@ import React from 'react'
 import Blog from './components/Blog'
 import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
+import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -92,37 +93,33 @@ class App extends React.Component {
     try{
       const newBlog = await blogService.create(this.state.newBlog)
 
+      // Add blog to list, show success message and clear form fields
       this.setState({
-        blogs: [...this.state.blogs, newBlog]
-      })
-      this.setState({
-        notification: {
-          type: "success",
-          text: `a new blog '${this.state.newBlog.title}' by ${this.state.newBlog.author} added`
-        }
-      })
-      setTimeout(() => {
-        this.setState({
-          notification: {
-            type: "",
-            text: ""
-          }
-        })
-      }, 5000)
-      this.setState({
+        blogs: [...this.state.blogs, newBlog],
         newBlog: {
           title: '',
           author: '',
           url: ''
         },
+        notification: {
+          type: "success",
+          text: `a new blog '${this.state.newBlog.title}' by ${this.state.newBlog.author} added`
+        }
       })
+
+      // Hide blog form
+      this.blogForm.toggleVisibility()
+
     } catch(exception) {
+      // Show error message
       this.setState({
         notification: {
           type: "error",
           text: "There was an error with submitting the new blog"
         }
       })
+    } finally {
+      // Hide message in 5 seconds
       setTimeout(() => {
         this.setState({
           notification: {
@@ -179,10 +176,12 @@ class App extends React.Component {
           <h1>blogs</h1>
           <p>{this.state.user.name} logged in</p>
           <button onClick={this.logout}>logout</button>
-          <BlogForm
-            newBlog={this.state.newBlog}
-            onChange={this.handleBlogFormChange}
-            onSubmit={this.handleBlogFormSubmit} />
+          <Togglable buttonLabel="Add new form" ref={component => this.blogForm = component}>
+            <BlogForm
+              newBlog={this.state.newBlog}
+              onChange={this.handleBlogFormChange}
+              onSubmit={this.handleBlogFormSubmit} />
+          </Togglable>
           {blogList()}
         </div>
     }
