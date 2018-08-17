@@ -1,4 +1,6 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+
 const BlogForm = (props) => (
   <form onSubmit={props.onSubmit}>
     <h2>create new</h2>
@@ -34,5 +36,11 @@ const BlogForm = (props) => (
       <input type="submit" value="create" />
   </form> 
 )
+
+BlogForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
+  newBlog: PropTypes.object.isRequired
+}
 
 export default BlogForm
