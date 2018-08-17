@@ -256,7 +256,8 @@ class App extends React.Component {
               key={blog.id}
               blog={blog}
               handleLike={this.handleLike}
-              handleDelete={this.handleDelete} />
+              handleDelete={this.handleDelete}
+              loggedUserId={this.state.user.id} />
           )
         }
       </div>

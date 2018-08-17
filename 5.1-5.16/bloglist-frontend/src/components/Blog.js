@@ -26,6 +26,14 @@ class Blog extends React.Component {
     }
   }
 
+  deleteButton = () => {
+    if( !this.props.blog.user ||
+        this.props.blog.user.id === this.props.loggedUserId) {
+          return <button onClick={this.delete()}>delete</button>
+        }
+    return null
+  }
+
   render() {
 
     const blogStyle = {
@@ -49,7 +57,7 @@ class Blog extends React.Component {
           {blog.likes}
           <button onClick={this.like()}>vote</button>
           added by {blog.user.name}
-          <button onClick={this.delete()}>delete</button>
+          {this.deleteButton()}
         </div>
       </div>  
     );
