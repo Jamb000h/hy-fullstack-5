@@ -12,6 +12,12 @@ class Blog extends React.Component {
     this.setState({visible: !this.state.visible})
   }
 
+  like = () => {
+    return () => {
+      this.props.handleClick(this.props.blog.id)
+    }
+  }
+
   render() {
 
     const blogStyle = {
@@ -33,7 +39,7 @@ class Blog extends React.Component {
         <div style={showWhenVisible}>
           {blog.url}
           {blog.likes}
-          <button>vote</button>
+          <button onClick={this.like()}>vote</button>
           added by {blog.user.name}
         </div>
       </div>  

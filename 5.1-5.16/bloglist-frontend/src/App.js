@@ -88,6 +88,57 @@ class App extends React.Component {
     })
   }
 
+  handleLike = async (id) => {
+
+    console.log(id)
+
+    try {
+      const blogById = this.state.blogs.find( blog => blog.id === id)
+
+      const blogToUpdate = {
+        title: blogById.title,
+        author: blogById.author,
+        url: blogById.url,
+        likes: blogById.likes + 1,
+        user: blogById.user.id
+      }
+
+      const updatedBlog = await blogService.update(blogToUpdate, id)
+
+      // Add blog to list, show success message and clear form fields
+      this.setState({
+        blogs: this.state.blogs.map( blog => blog.id === updatedBlog.id ?
+          {...blog, likes: updatedBlog.likes} :
+          blog
+        ),
+        notification: {
+          type: "success",
+          text: `your like for '${updatedBlog.title}' has been registered. Votes: ${updatedBlog.likes}`
+        }
+      })
+    } catch(exception) {
+      // Show error message
+      this.setState({
+        notification: {
+          type: "error",
+          text: "There was an error with adding your like"
+        }
+      })
+    } finally {
+      // Hide message in 5 seconds
+      setTimeout(() => {
+        this.setState({
+          notification: {
+            type: "",
+            text: ""
+          }
+        })
+      }, 5000)
+    }
+
+
+  }
+
   handleBlogFormSubmit = async (event) => {
     event.preventDefault()
     try{
@@ -163,7 +214,7 @@ class App extends React.Component {
     const blogList = () => (
       <div>
         {this.state.blogs.map(blog => 
-          <Blog key={blog.id} blog={blog}/>
+          <Blog key={blog.id} blog={blog} handleClick={this.handleLike}/>
         )}
       </div>
     )
