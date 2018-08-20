@@ -58,11 +58,11 @@ class Blog extends React.Component {
     const blog = this.props.blog
 
     return (
-      <div style={blogWrapperStyle}>
-        <div onClick={this.toggleVisibility}>
+      <div style={blogWrapperStyle} className="wrapper">
+        <div onClick={this.toggleVisibility} className="header">
           {blog.title} by {blog.author}
         </div>
-        <div style={blogInfoStyle}>
+        <div style={blogInfoStyle} className="content">
           <p>URL: {blog.url}</p>
           <p>Likes: {blog.likes}</p>
           <button onClick={this.like()}>like</button>
