@@ -279,7 +279,7 @@ class App extends React.Component {
           </Togglable>
           {blogList()}
         </div>
-    }
+        }
 
       </div>
     );
