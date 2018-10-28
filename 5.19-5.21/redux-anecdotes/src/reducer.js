@@ -23,6 +23,8 @@ const reducer = (state = initialState, action) => {
   switch(action.type) {
     case 'VOTE':
       return state.map(a => a.id === action.data.id ? {...a, votes: a.votes + 1} : a);
+    case 'ADD_NEW':
+      return [...state, asObject(action.data.text)]
     default: 
       return state
   }

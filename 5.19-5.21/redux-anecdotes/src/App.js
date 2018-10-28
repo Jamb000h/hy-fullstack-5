@@ -2,6 +2,19 @@ import React from 'react';
 
 
 class App extends React.Component {
+
+  lisaaAnekdootti = (event) => {
+    event.preventDefault()
+    const content = event.target.anekdootti.value
+    this.props.store.dispatch({
+      type: 'ADD_NEW',
+      data: {
+        text: content
+      }
+    })
+    event.target.anekdootti.value = ''
+  }
+
   render() {
     const anecdotes = this.props.store.getState().sort( (a,b) => { return b.votes - a.votes })
     return (
@@ -19,9 +32,9 @@ class App extends React.Component {
           </div>
         )}
         <h2>create new</h2>
-        <form>
-          <div><input /></div>
-          <button>create</button> 
+        <form onSubmit={this.lisaaAnekdootti}>
+          <input name="anekdootti" type="text" />
+          <button type="submit">create</button>
         </form>
       </div>
     )
